@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1322"/>
+      <stop offset="50%" stop-color="#0d192e"/>
+      <stop offset="100%" stop-color="#070a10"/>
+    </linearGradient>
+    <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.1"/>
+    </linearGradient>
+    <radialGradient id="ambient" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#818cf8" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#07090e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="380" r="340" fill="url(#ambient)"/>
+
+  <!-- Technical Grid overlay -->
+  <g opacity="0.05" stroke="#ffffff" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="1000"/>
+    <line x1="200" y1="0" x2="200" y2="1000"/>
+    <line x1="300" y1="0" x2="300" y2="1000"/>
+    <line x1="400" y1="0" x2="400" y2="1000"/>
+    <line x1="500" y1="0" x2="500" y2="1000"/>
+    <line x1="600" y1="0" x2="600" y2="1000"/>
+    <line x1="700" y1="0" x2="700" y2="1000"/>
+    <line x1="0" y1="150" x2="800" y2="150"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="450" x2="800" y2="450"/>
+    <line x1="0" y1="600" x2="800" y2="600"/>
+    <line x1="0" y1="750" x2="800" y2="750"/>
+    <line x1="0" y1="900" x2="800" y2="900"/>
+  </g>
+
+  <!-- Tech Geometric Constellation Rings -->
+  <circle cx="400" cy="380" r="230" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="6,8"/>
+  <circle cx="400" cy="380" r="170" fill="none" stroke="#818cf8" stroke-width="1" stroke-opacity="0.2"/>
+
+  <!-- Professional Developer Avatar Silhouette -->
+  <!-- Shoulders / Torso -->
+  <path d="M 220 850 C 220 680, 310 630, 400 630 C 490 630, 580 680, 580 850 Z" fill="#152033" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4"/>
+  <path d="M 330 635 L 400 740 L 470 635 Z" fill="#1e2c44" opacity="0.6"/>
+
+  <!-- Head / Face silhouette -->
+  <circle cx="400" cy="410" r="120" fill="#1c283d" stroke="#38bdf8" stroke-width="2.5" stroke-opacity="0.5"/>
+  
+  <!-- Sleek Glasses / AI Headset hint -->
+  <rect x="330" y="390" width="60" height="34" rx="8" fill="none" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.8"/>
+  <rect x="410" y="390" width="60" height="34" rx="8" fill="none" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.8"/>
+  <line x1="390" y1="407" x2="410" y2="407" stroke="#38bdf8" stroke-width="3" stroke-opacity="0.8"/>
+  <line x1="305" y1="404" x2="330" y2="404" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.6"/>
+  <line x1="470" y1="404" x2="495" y2="404" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.6"/>
+
+  <!-- AI / ML Constellation Nodes -->
+  <circle cx="280" cy="270" r="6" fill="#38bdf8"/>
+  <circle cx="530" cy="280" r="6" fill="#818cf8"/>
+  <circle cx="220" cy="460" r="5" fill="#38bdf8"/>
+  <circle cx="580" cy="440" r="5" fill="#34d399"/>
+  <line x1="280" y1="270" x2="400" y2="290" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.4"/>
+  <line x1="530" y1="280" x2="400" y2="290" stroke="#818cf8" stroke-width="1.5" stroke-opacity="0.4"/>
+  <line x1="220" y1="460" x2="280" y2="410" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.3"/>
+  <line x1="580" y1="440" x2="520" y2="410" stroke="#34d399" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Badge at base of graphic -->
+  <rect x="200" y="880" width="400" height="60" rx="16" fill="#0b0f17" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <text x="400" y="918" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1">RAKESH MAGAPU</text>
+</svg>
