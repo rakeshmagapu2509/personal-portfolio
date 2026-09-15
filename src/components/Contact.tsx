@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { personalInfo } from '../data/portfolioData';
-import { Send, Copy, Check, Mail, Phone } from 'lucide-react';
+import { Send, Copy, Check, Mail, Phone, ExternalLink } from 'lucide-react';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,14 +12,14 @@ export const Contact: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [submittedStatus, setSubmittedStatus] = useState<boolean>(false);
+  const [submittedGmailUrl, setSubmittedGmailUrl] = useState<string>('');
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.name.trim()) newErrors.name = 'Please enter your name.';
     if (!formData.email.trim()) {
       newErrors.email = 'Please enter your email.';
-    } else if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email.trim())) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = 'Please enter a valid email address.';
     }
     if (!formData.subject.trim()) newErrors.subject = 'Please enter a subject.';
@@ -36,17 +36,55 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
 
-    // Honest handling: Launches user default email client prefilled.
-    const mailtoUrl = "mailto:" + personalInfo.email + 
-      "?subject=" + encodeURIComponent("[" + formData.name + "] " + formData.subject) +
-      "&body=" + encodeURIComponent(
-        "Sender Name: " + formData.name + "\n" +
-        "Sender Email: " + formData.email + "\n\n" +
-        "Message:\n" + formData.message
-      );
+    const bodyContent = 
+      `Name: ${formData.name.trim()}\n` +
+      `Email: ${formData.email.trim()}\n\n` +
+      `Message:\n${formData.message.trim()}`;
 
-    window.location.href = mailtoUrl;
-    setSubmittedStatus(true);
+    const recipient = personalInfo.email;
+    const subject = formData.subject.trim();
+
+    // Standard Gmail Web Compose URL
+    const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      recipient
+    )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
+
+    setSubmittedGmailUrl(gmailWebUrl);
+
+    // Cross-device detection
+    const ua = typeof navigator !== 'undefined' ? (navigator.userAgent || navigator.vendor || (window as any).opera || '') : '';
+    const isAndroid = /android/i.test(ua);
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+
+    if (isAndroid) {
+      // Android Intent: attempts to open native Gmail app; falls back to browser_fallback_url if not installed
+      const androidIntentUrl = `intent://co?to=${encodeURIComponent(
+        recipient
+      )}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        bodyContent
+      )}#Intent;scheme=googlegmail;package=com.google.android.gm;S.browser_fallback_url=${encodeURIComponent(
+        gmailWebUrl
+      )};end`;
+      window.location.href = androidIntentUrl;
+    } else if (isIOS) {
+      // iOS: attempts to open native Gmail app scheme; falls back to Gmail web compose if app is absent
+      const iosGmailUrl = `googlegmail://co?to=${encodeURIComponent(
+        recipient
+      )}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
+      const startTime = Date.now();
+      window.location.href = iosGmailUrl;
+      setTimeout(() => {
+        if (typeof document !== 'undefined' && document.visibilityState === 'visible' && Date.now() - startTime < 2500) {
+          window.location.href = gmailWebUrl;
+        }
+      }, 1200);
+    } else {
+      // Desktop / Laptop: launch Gmail Web Compose in a new tab directly
+      const newTab = window.open(gmailWebUrl, '_blank', 'noopener,noreferrer');
+      if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+        window.location.href = gmailWebUrl;
+      }
+    }
   };
 
   const handleCopyEmail = () => {
@@ -273,15 +311,24 @@ export const Contact: React.FC = () => {
             </form>
 
             {/* Status Notice */}
-            {submittedStatus && (
+            {submittedGmailUrl && (
               <div className="mt-4 p-3.5 rounded-2xl bg-purple-950/40 border border-purple-500/30 text-xs text-zinc-300 animate-in fade-in duration-200">
                 <div className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-white mb-0.5">Transceiver protocol ready in your default email client.</p>
-                    <p className="text-zinc-400 text-[11px]">
-                      If your client did not launch automatically, feel free to copy <strong className="text-purple-300">{personalInfo.email}</strong> and transmit your message directly.
+                  <div className="flex-1">
+                    <p className="font-semibold text-white mb-0.5">Opening Gmail…</p>
+                    <p className="text-zinc-400 text-[11px] mb-2 leading-relaxed">
+                      Your message has been prepared for <strong className="text-purple-300">{personalInfo.email}</strong>. If Gmail didn't open automatically, tap below:
                     </p>
+                    <a
+                      href={submittedGmailUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/30 text-purple-200 hover:text-white font-medium text-xs transition-colors"
+                    >
+                      <span>Open Gmail Web Compose</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-purple-300" />
+                    </a>
                   </div>
                 </div>
               </div>
